@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="/asset/like-blue.png" />
+    <!-- Polices & icônes -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <title>Mon Dashboard Emploi · Édition Gratuite</title>
+    
+</head>
+<body>
+    <!-- Preloader amélioré -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-content">
+            <div class="preloader-spinner">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <p>Préparation de votre espace personnalisé</p>
+            <div class="preloader-progress">
+                <div class="preloader-progress-bar" id="preloaderProgress"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard" id="dashboard">
+        <!-- Profil avec bouton de thème -->
+        <div class="profile-header">
+            <div class="profile-pic">JD</div>
+            <div class="profile-info">
+                <h1>Jean Cherche</h1>
+                <p>
+                    <i class="fas fa-envelope" style="color:#94a3b8;"></i> jean.cherche@email.com
+                    <span class="badge"><i class="fas fa-check-circle"></i> Recherche active</span>
+                </p>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Changer le thème"><i class="fas fa-moon"></i> Thème</button>
+        </div>
+
+        <!-- Grille du dashboard -->
+        <div class="grid">
+            <!-- 4 cartes statistiques -->
+            <div class="card stat-cards">
+                <div class="card-header"><h3>Candidatures</h3> <i class="fas fa-file-alt"></i></div>
+                <div class="stat-value" id="totalCandidatures">24</div>
+                <div class="stat-label">Total envoyées</div>
+                <div class="trend up"><i class="fas fa-arrow-up"></i> +12% cette semaine</div>
+            </div>
+            <div class="card stat-cards">
+                <div class="card-header"><h3>Entretiens</h3> <i class="fas fa-calendar-check"></i></div>
+                <div class="stat-value" id="totalEntretiens">8</div>
+                <div class="stat-label">Dont 3 à venir</div>
+                <div class="trend up"><i class="fas fa-arrow-up"></i> +2 cette semaine</div>
+            </div>
+            <div class="card stat-cards">
+                <div class="card-header"><h3>Réponses</h3> <i class="fas fa-reply-all"></i></div>
+                <div class="stat-value" id="totalReponses">12</div>
+                <div class="stat-label">Taux de réponse <span id="tauxReponse">50</span>%</div>
+                <div class="trend down"><i class="fas fa-arrow-down"></i> -5% vs mois dernier</div>
+            </div>
+            <div class="card stat-cards">
+                <div class="card-header"><h3>Succès</h3> <i class="fas fa-trophy"></i></div>
+                <div class="stat-value" id="tauxSucces">33</div>
+                <div class="stat-label">Entretiens → offre</div>
+                <div class="trend up"><i class="fas fa-arrow-up"></i> +8%</div>
+            </div>
+
+            <!-- Liens utiles -->
+            <div class="card" style="grid-column: span 12;">
+                <div class="card-header"><h3>🔗 Liens utiles</h3> <i class="fas fa-external-link-alt"></i></div>
+                <div class="useful-links">
+                    <a href="https://www.linkedin.com/jobs/" target="noopener" class="link-btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                    <a href="https://www.indeed.com" target="noopener" class="link-btn"><i class="fas fa-briefcase"></i> Indeed</a>
+                    <a href="https://www.hellowork.com" target="noopener" class="link-btn"><i class="fas fa-heart"></i> HelloWork</a>
+                    <a href="https://www.viteunemploi.com" target="noopener" class="link-btn"><i class="fas fa-bolt"></i> Viteunemploi</a>
+                    <a href="https://www.francetravail.fr" target="noopener" class="link-btn"><i class="fas fa-flag"></i> France-Travail</a>
+                </div>
+            </div>
+
+            <!-- Graphique 1 : Candidatures -->
+            <div class="card chart-container">
+                <div class="card-header"><h3>Candidatures / 7 derniers jours</h3> <i class="fas fa-chart-bar"></i></div>
+                <canvas id="chartCandidatures"></canvas>
+            </div>
+
+            <!-- Graphique 2 : Offres d'emploi pour le poste recherché -->
+            <div class="card chart-container">
+                <div class="card-header"><h3>Offres / poste recherché</h3> <i class="fas fa-chart-line"></i></div>
+                <canvas id="chartOffres"></canvas>
+            </div>
+
+            <!-- Conseils emploi -->
+            <div class="card tips-container">
+                <div class="card-header"><h3>💡 Conseils du jour</h3> <i class="fas fa-lightbulb"></i></div>
+                <div class="tip-item"><i class="fas fa-handshake"></i><p>Personnalisez votre lettre de motivation pour chaque offre.</p></div>
+                <div class="tip-item"><i class="fas fa-network-wired"></i><p>70% des postes ne sont pas publiés : activez votre réseau.</p></div>
+                <div class="tip-item"><i class="fas fa-chart-simple"></i><p>Utilisez des verbes d'action dans votre CV.</p></div>
+                <div class="tip-item"><i class="fas fa-clock"></i><p>Répondez aux recruteurs dans les 24h.</p></div>
+            </div>
+
+            <!-- Importer / Ajouter -->
+            <div class="card import-card">
+                <div class="card-header"><h3>📥 Importer / Ajouter</h3> <i class="fas fa-envelope-open-text"></i></div>
+                <div class="import-actions">
+                    <button class="btn" id="importGmailBtn"><i class="fab fa-google"></i> Importer depuis Gmail</button>
+                    <button class="btn btn-outline" id="showFormBtn"><i class="fas fa-pen"></i> Ajouter manuellement</button>
+                </div>
+                <!-- Formulaire d'ajout manuel (caché) -->
+                <div id="manualForm" style="display: none; margin-top: 20px;">
+                    <div class="form-group">
+                        <label>Entreprise</label>
+                        <input type="text" id="entrepriseInput" placeholder="Ex: TechCorp">
+                    </div>
+                    <div class="form-group">
+                        <label>Poste</label>
+                        <input type="text" id="posteInput" placeholder="Ex: Développeur Fullstack">
+                    </div>
+                    <div class="form-group">
+                        <label>Date</label>
+                        <input type="date" id="dateInput" value="2025-03-25">
+                    </div>
+                    <div class="form-group">
+                        <label>Statut</label>
+                        <select id="statutInput">
+                            <option value="en cours">En cours</option>
+                            <option value="entretien">Entretien</option>
+                            <option value="refus">Refus</option>
+                        </select>
+                    </div>
+                    <button class="btn" id="ajouterCandidatureBtn" style="width:100%;">Ajouter</button>
+                </div>
+            </div>
+
+            <!-- Liste des candidatures récentes -->
+            <div class="card candidatures-list">
+                <div class="card-header"><h3>📋 Candidatures récentes</h3> <i class="fas fa-list"></i></div>
+                <div id="candidaturesContainer"></div>
+            </div>
+
+            <!-- Candidatures spontanées suggérées -->
+            <div class="card spontane-card">
+                <div class="card-header"><h3>📬 Candidatures spontanées suggérées</h3> <i class="fas fa-paper-plane"></i></div>
+                <div id="spontaneContainer"></div>
+            </div>
+
+            <!-- Objectifs & Prochains entretiens -->
+            <div class="card" style="grid-column: span 6;">
+                <div class="card-header"><h3>🎯 Objectifs & Prochains entretiens</h3> <i class="fas fa-bullseye"></i></div>
+                <div class="objectives-section">
+                    <h4>Objectif hebdomadaire</h4>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+                        <span>Cette semaine : <span id="candidaturesSemaine">0</span> / <input type="number" id="objectifHebdo" value="5" min="1" max="20" style="width: 70px; background: #0f172a; border: 1px solid var(--accent); color: white; padding: 6px; border-radius: 12px;"></span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div id="progressBar" style="width: 0%;"></div>
+                    </div>
+
+                    <h4><i class="fas fa-calendar-alt" style="color: #fbbf24;"></i> Prochains entretiens</h4>
+                    <div id="prochainsEntretiensList"></div>
+
+                    <h4>⏳ Délais de réponse</h4>
+                    <div id="delaiReponse" style="background: var(--tip-bg); padding: 12px; border-radius: 16px; font-size: 0.9rem;"></div>
+
+                    <h4>📊 Compétences clés</h4>
+                    <div class="skill-tag"><span>React / Vue</span> <span>80%</span></div>
+                    <div class="skill-tag"><span>Communication</span> <span>75%</span></div>
+                    <div class="skill-tag"><span>Gestion projet</span> <span>60%</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BANDEAU DÉROULANT AVEC STATS CLÉS -->
+        <div class="stats-banner" id="statsBanner">
+            <div class="banner-item">
+                <div class="value" id="bannerTauxEmploi">68%</div>
+                <div class="label">Taux d'emploi secteur</div>
+            </div>
+            <div class="banner-item">
+                <div class="value" id="bannerTauxEntretien">33%</div>
+                <div class="label">Taux d'entretien</div>
+            </div>
+            <div class="banner-item">
+                <div class="value" id="bannerOffresPostulees">24</div>
+                <div class="label">Offres postulées</div>
+            </div>
+            <div class="banner-item">
+                <div class="value" id="bannerEnCours">10</div>
+                <div class="label">En cours</div>
+            </div>
+            <div class="banner-tip" id="bannerTip">
+                <p>💡 "Relancez vos candidatures après une semaine"</p>
+            </div>
+        </div>
+
+        <!-- NOUVELLE RANGÉE : Améliorations -->
+        <div class="grid" style="margin-top: 30px;">
+            <!-- Carte Préparation aux entretiens améliorée -->
+            <div class="card new-card">
+                <div class="card-header"><h3>🎤 Préparation entretiens</h3> <i class="fas fa-comments"></i></div>
+                <div id="interviewQuestions">
+                    <div class="interview-item" id="question1">
+                        <div class="interview-question" onclick="toggleAnswer(1)">
+                            <span>❓ Parlez-moi de vous.</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="interview-answer" id="answer1">
+                            Préparez un résumé de votre parcours en 2 minutes, en mettant en avant vos compétences clés et en lien avec le poste.
+                        </div>
+                    </div>
+                    <div class="interview-item" id="question2">
+                        <div class="interview-question" onclick="toggleAnswer(2)">
+                            <span>❓ Quelles sont vos qualités/défauts ?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="interview-answer" id="answer2">
+                            Citez une qualité (ex: rigueur) avec un exemple, et un défaut (ex: perfectionniste) en montrant comment vous le gérez.
+                        </div>
+                    </div>
+                    <div class="interview-item" id="question3">
+                        <div class="interview-question" onclick="toggleAnswer(3)">
+                            <span>❓ Pourquoi voulez-vous travailler ici ?</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="interview-answer" id="answer3">
+                            Montrez que vous connaissez l'entreprise, ses valeurs, et expliquez en quoi votre projet professionnel correspond.
+                        </div>
+                    </div>
+                </div>
+                <button class="btn" style="margin-top: 10px; width:100%;" onclick="simulateInterview()">Simuler un entretien</button>
+            </div>
+
+            <!-- Carte Réseau -->
+            <div class="card new-card">
+                <div class="card-header"><h3>🤝 Réseau</h3> <i class="fas fa-users"></i></div>
+                <div style="text-align: center;">
+                    <div class="stat-value" id="reseauxContacts">147</div>
+                    <div class="stat-label">Contacts LinkedIn</div>
+                    <div style="margin-top: 10px;">📩 3 messages en attente</div>
+                    <button class="btn" style="margin-top: 10px;" onclick="alert('Simulation : invitation envoyée -Fonctionnalité premium-')"><i class="fab fa-linkedin"></i> Ajouter des contacts</button>
+                </div>
+            </div>
+
+            <!-- Carte Blog / Actualités -->
+            <div class="card new-card">
+                <div class="card-header"><h3>📰 Actualités emploi</h3> <i class="fas fa-newspaper"></i></div>
+                <div class="testimonial">"Le marché de l'IT est en hausse de 15%"</div>
+                <div class="testimonial">"Les soft skills de plus en plus recherchées"</div>
+                <div class="webinar-item">
+                    <span>Webinaire "Réussir ses entretiens"</span>
+                    <button class="btn" style="padding: 4px 8px;" onclick="alert('Inscription simulée -Fonctionnalité premium-')">S'inscrire</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Premium (espace augmenté) -->
+        <div class="premium-section">
+            <h2>🚀 Passez à la vitesse supérieure avec notre offre Premium</h2>
+            <p>
+                Ne laissez plus aucune opportunité vous échapper ! Nos agents intelligents postulent à votre place <strong>dès la seconde où une annonce correspondant à votre profil apparaît</strong>. 
+                Bénéficiez de <strong>relances programmées</strong>, de <strong>lettres de motivation générées automatiquement</strong> et de <strong>candidatures spontanées ultra-personnalisées</strong>. 
+                Soyez le premier à postuler, avant tous les autres, et multipliez vos chances de décrocher le job de vos rêves. 
+                L'automatisation au service de votre carrière.
+            </p>
+            <button class="premium-btn" onclick="alert('🚀 Redirection vers la version premium disponible le 27 février 2026 (simulation)')">
+                <i class="fas fa-crown"></i> Découvrir l'abonnement Premium
+            </button>
+        </div>
+
+        <!-- Bouton d'export centré -->
+        <div class="export-container">
+            <button class="btn" onclick="exportData()"><i class="fas fa-download"></i> Exporter mes stats</button>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Créé par <strong>APPERT Agency</strong> · Tous droits réservés 2026</p>
+        </footer>
+    </div>
+
+    <!-- Toast pour notifications -->
+    <div class="toast" id="toast">Notification</div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+    <script src="main.js"></script>
+</body>
+</html>
